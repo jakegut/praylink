@@ -1,0 +1,34 @@
+.mdl-card{
+    max-width: 100%;
+}
+.prayer-sent{
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.prayed-for-button{
+    width: 125px;
+    margin: 0 auto;
+}
+.masonry-grid-item {
+    float: left;
+    margin-bottom: 30px;
+    visibility: hidden;; /*hidden by default*/
+}
+
+.are-images-ready .masonry-grid-item { visibility: visible; }
+
+.masonry-grid{
+    min-height: 600px;
+    margin: 0 auto;
+}
+
+.page-load-status{
+    display: none;
+  }
+
+.page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 400px;
+}
