@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Prayer Requests{% endblock %}
+
+{% block content %}
+    <div class="mdl-grid" style="justify-content: center;">
+        <div class="mdl-cell mdl-cell--12-col">
+            <h2>Prayer Requests</h2>
+        </div>
+    </div>
+    <div class="masonry-grid" style="justify-content: center;">
+        {% include 'prayer/items.html' %}
+        <div class="js-infinite-navigation">
+            <a class="js-infinite-navigation-l"href="{{ url_for('index', page=page+1) }}"></a>
+        </div>    
+    </div>
+    <div class="page-load-status">
+        <p class="infinite-scroll-request">Loading...</p>
+        <p class="infinite-scroll-last">End of content</p>
+        <p class="infinite-scroll-error">No more pages to load</p>
+    </div>
+{% endblock %}
