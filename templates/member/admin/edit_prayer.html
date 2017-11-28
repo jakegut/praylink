@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Prayer{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Edit Prayer</h3>
+        
+        {% from "_formhelpers.html" import render_field %}
+
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('edit_prayer', prayer_id=prayer.id)}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.content, class="mdl-textfield__input", value=prayer.content) }}
+
+            {% if prayer.update %}
+                {{ render_field(form.update, class="mdl-textfield__input", value=prayer.update) }}
+            {% endif %}
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Update</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

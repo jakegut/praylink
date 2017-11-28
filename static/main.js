@@ -15,6 +15,27 @@ $(document).ready(function(){
       return false;
     }
 
+    $('.delete-prayer').click(function() {
+        if(confirm("Do you want to delete this prayer?")){
+            var prayerID = $(this).attr('prayerID');
+            deletePrayer(prayerID)
+        }
+    });
+
+    function deletePrayer(prayerID){
+        $.ajax({
+            type: "POST",
+            url: "/admin/delete/" + prayerID,
+            success: function(msg) {
+                showBar(msg.message)
+                $('.prayer-row-' + msg.prayer_id).remove()
+            },
+            error: function(request, status, error){
+                showBar("Prayer did not delete successfully.")
+            }
+        })
+    }
+
     var elem = document.querySelector('.masonry-grid');
     var $grid = $('.masonry-grid').masonry({
      // options
@@ -50,4 +71,11 @@ $(document).ready(function(){
         status: '.page-load-status',
         elementScroll: '.mdl-layout__content'
     });
+
+    
+    function showBar(message){
+        var snackbarContainer = document.querySelector('#demo-toast-example');
+        var data = {message: message};
+        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    }
 });

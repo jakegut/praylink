@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Prayer Requests{% endblock %}
+
+{% block content %}
+    <div class="mdl-grid" style="justify-content: center;">
+        <div class="mdl-cell mdl-cell--12-col">
+            <h2>Manage Prayer Requests</h2>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col" style="margin: 0 auto; overflow-x: auto; padding: 5px;">
+                <table style="width: 100%;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <thead>
+                        <tr>
+                        <th>ID</th>   
+                        <th class="mdl-data-table__cell--non-numeric">Prayer</th>
+                        <th>Prayed for count</th>
+                        <th class="mdl-data-table__cell--non-numeric">Update</th>
+                        <th class="mdl-data-table__cell--non-numeric">Edit</th>
+                        <th class="mdl-data-table__cell--non-numeric">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prayer in prayers %}
+                        <tr class="prayer-row-{{prayer.id}}">
+                        <td>{{ prayer.id }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ prayer.content }}</td>
+                        <td>{{ prayer.prayer_count }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            <a href="{{ url_for('edit_prayer', prayer_id=prayer.id) }}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Edit</button></a>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            <button prayerID="{{ prayer.id }}" class="delete-prayer mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+{% endblock %}
