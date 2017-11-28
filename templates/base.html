@@ -23,21 +23,23 @@
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation. We hide it in small screens. -->
-                <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
+                <nav class="mdl-navigation">
+                    {% if session.get('member_id') %}
+                    <a class="mdl-navigation__link" href="{{ url_for('logout') }}">Logout</a>
+                    {% else %}
+                    <a class="mdl-navigation__link" href="{{ url_for('login') }}">Login</a>
+                    <a class="mdl-navigation__link" href="{{ url_for('register') }}">Signup</a>
+                    {% endif %}
+                    {% if session.get('is_admin') %}
+                    <a class="mdl-navigation__link" href="">Admin</a>
+                    {% endif %}
                 </nav>
                 </div>
             </header>
             <div class="mdl-layout__drawer">
                 <span class="mdl-layout-title">Praylink</span>
                 <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="{{ url_for('index') }}">Prayer Requests</a>
                 </nav>
             </div>
             <main class="mdl-layout__content">
