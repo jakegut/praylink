@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Member Signup{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Signup</h3>
+        
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+
+        {% from "_formhelpers.html" import render_field %}
+        
+        <form method="POST" action="{{ url_for('signup')}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.password, class="mdl-textfield__input") }}
+            {{ render_field(form.confirm, class="mdl-textfield__input") }}
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Signup</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -21,3 +21,9 @@ class Prayer(db.Model):
 
     def __repr__():
         return '<Prayer %r>' % self.content
+
+prayed_for = db.Table('prayed_for',
+    db.Column("member_id", db.Integer, db.ForeignKey('member.id')),
+    db.Column("prayer_id", db.Integer, db.ForeignKey('prayer.id')),
+    db.UniqueConstraint('member_id', 'prayer_id', name='unique')
+)

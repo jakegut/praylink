@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Validate Number{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Validate Phone Number</h3>
+        
+        {% from "_formhelpers.html" import render_field %}
+        
+        <form method="POST" action="{{ url_for('validate')}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.code, class="mdl-textfield__input") }}
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Proceed</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

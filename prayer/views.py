@@ -1,16 +1,14 @@
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, session
 from prayer_bot_flask import app
-from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from prayer_bot_flask import db
+from prayer_bot_flask.tasks import send_update
+from sqlalchemy import exc
 from profanity import profanity 
 from prayer.models import Prayer
 from member.models import Member
 from utils.spreadsheet_util import add_to_spreadsheet
 from utils.groupme_util import add_to_groupme
-
-account_sid = app.config["TEST_ACCOUNT_SID"]
-auth_token = app.config["TEST_AUTH_TOKEN"]
 
 @app.route('/')
 @app.route('/page/<int:page>')
@@ -22,10 +20,23 @@ def index(page=1):
 
 @app.route('/prayed_for/<int:prayer_id>', methods=['POST'])
 def prayed_for(prayer_id):
+
+    if 'member_id' in session:
+        member_id = session['member_id']
+
     prayer = Prayer.query.filter_by(id=prayer_id).first()
     if prayer.id:
         prayer.prayer_count += 1
         db.session.commit()
+        if member_id:
+            member = Member.query.filter_by(id=member_id).first()
+            if member:
+                prayer.prayed_for.append(member)
+        try:
+            db.session.commit()
+        except exc.IntegrityError as e:
+            db.session.rollback()
+            return jsonify({'success': 'success', 'prayer_count': prayer.prayer_count})
         return jsonify({'success': 'success', 'prayer_count': prayer.prayer_count})
     else:
         return jsonify({'error': 'error'})
@@ -106,6 +117,7 @@ def update_prayer(update_content, member):
         if prayer.id:
             prayer.update = update_content
             db.session.commit()
+            send_update.delay(prayer_id)
             return "Prayer updated successfully!"
         else:
             return "Prayer not found, try again!"
