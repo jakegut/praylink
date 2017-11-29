@@ -1,8 +1,8 @@
 # Praylink
-A service that allows people to text in a prayer request
+A service that allows people to text in a prayer request.
 
 ## About
-Came about as a way to gather prayer requests for a youth minsitry.
+Came about as a way to gather prayer requests for a youth ministry.
 
 ## Features
 Prayer requests are added to Google Spreadsheet, and if it's an "urgent" prayer it will also be sent to a GroupMe group. There is also a website where people can pray for prayer requests and create an account to get updates on the prayers they have prayed for. Admin functionality is available to edit and delete prayers.
