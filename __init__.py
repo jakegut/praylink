@@ -22,5 +22,10 @@ client = Client(account_sid, auth_token)
 from prayer.models import Prayer, prayed_for
 from member.models import Member
 
+#Register Views
 from prayer import views
 from member import views
+
+#Register Blueprints
+from admin.views import admin_blueprint
+app.register_blueprint(admin_blueprint, url_prefix='/admin')
