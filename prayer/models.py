@@ -19,7 +19,7 @@ class Prayer(db.Model):
         self.update = update
         self.prayer_count = prayer_count
 
-    def __repr__():
+    def __repr__(self):
         return '<Prayer %r>' % self.content
 
 prayed_for = db.Table('prayed_for',
