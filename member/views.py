@@ -3,7 +3,7 @@ from prayer_bot_flask import app, client, db
 from secrets import randbelow
 from member.models import Member
 from prayer.models import Prayer
-from member.decorators import admin_required
+from member.decorators import login_required
 from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm
 import bcrypt
 
@@ -126,6 +126,15 @@ def logout():
     else:
         return redirect(url_for('index'))
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    member_id = session['member_id']
+
+    member = Member.query.filter_by(id=member_id).first()
+    prayed_for = Prayer.query.filter_by(member_id=member.id).all()
+    prayers = member.prayers.all()
+    return render_template('member/dashboard.html', prayers=prayers, prayed_for=prayed_for)
 
 
     

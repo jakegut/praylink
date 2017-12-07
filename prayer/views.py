@@ -20,16 +20,12 @@ def index(page=1):
 
 @app.route('/prayed_for/<int:prayer_id>', methods=['POST'])
 def prayed_for(prayer_id):
-
-    if 'member_id' in session:
-        member_id = session['member_id']
-
     prayer = Prayer.query.filter_by(id=prayer_id).first()
     if prayer.id:
         prayer.prayer_count += 1
         db.session.commit()
-        if member_id:
-            member = Member.query.filter_by(id=member_id).first()
+        if 'member_id' in session:
+            member = Member.query.filter_by(id=session['member_id']).first()
             if member:
                 prayer.prayed_for.append(member)
         try:

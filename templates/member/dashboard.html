@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Prayer Requests{% endblock %}
+
+{% block content %}
+    <div class="mdl-grid" style="justify-content: center;">
+        <div class="mdl-cell mdl-cell--12-col">
+            <h2>Manage Prayer Requests</h2>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#prayers-submitted-panel" class="mdl-tabs__tab is-active">Prayers</a>
+                    <a href="#lannisters-panel" class="mdl-tabs__tab">Prayed For</a>
+                </div>
+                
+                <div class="mdl-tabs__panel is-active" id="prayers-submitted-panel" style="margin: 0 auto; overflow-x: auto; padding: 5px;">
+                    <table style="width: 100%;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                        <thead>
+                            <tr>
+                            <th>ID</th>   
+                            <th class="mdl-data-table__cell--non-numeric">Prayer</th>
+                            <th>Prayed for count</th>
+                            <th class="mdl-data-table__cell--non-numeric">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prayer in prayers %}
+                            <tr class="prayer-row-{{prayer.id}}">
+                            <td>{{ prayer.id }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prayer.content }}</td>
+                            <td>{{ prayer.prayer_count }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mdl-tabs__panel" id="lannisters-panel">
+                    <table style="width: 100%;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                            <thead>
+                                <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Prayer</th>
+                                <th>Prayed for count</th>
+                                <th class="mdl-data-table__cell--non-numeric">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prayer in prayed_for %}
+                                <tr class="prayer-row-{{prayer.id}}">
+                                <td class="mdl-data-table__cell--non-numeric">{{ prayer.content }}</td>
+                                <td>{{ prayer.prayer_count }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                </div>
+        </div>
+    </div>
+{% endblock %}
