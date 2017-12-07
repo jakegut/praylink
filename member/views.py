@@ -4,7 +4,7 @@ from secrets import randbelow
 from member.models import Member
 from prayer.models import Prayer
 from member.decorators import admin_required
-from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, EditPrayer
+from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm
 import bcrypt
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -125,40 +125,6 @@ def logout():
         return redirect(url_for('index'))
     else:
         return redirect(url_for('index'))
-
-@app.route('/admin')
-@admin_required
-def admin():
-    prayers = Prayer.query.order_by(Prayer.publish_date.desc()).all()
-    return render_template("member/admin/index.html", prayers=prayers)
-
-@app.route('/admin/edit/<int:prayer_id>', methods=['GET', 'POST'])
-@admin_required
-def edit_prayer(prayer_id):
-    prayer = Prayer.query.filter_by(id=prayer_id).first_or_404()
-    form = EditPrayer()
-
-    if form.validate_on_submit():
-        prayer.content = form.content.data
-        if form.update.data:
-            prayer.update = form.update.data
-        db.session.commit()
-        flash("Prayer updated sucessfully!")
-        return redirect(url_for('admin'))
-
-    return render_template("member/admin/edit_prayer.html", form=form, prayer=prayer)
-
-@app.route('/admin/delete/<int:prayer_id>', methods=['POST'])
-@admin_required
-def delete_prayer(prayer_id):
-    prayer = Prayer.query.filter_by(id=prayer_id).first()
-    db.session.delete(prayer)
-    try:
-        db.session.commit()
-        return jsonify({"message": "Prayer deleted successfully", "prayer_id": prayer_id})
-    except:
-        db.session.rollback()
-        return make_resonse(jsonify({"message": "Prayer was not deleted", "prayer_id": prayer_id}), 500)
 
 
 

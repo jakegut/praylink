@@ -27,7 +27,7 @@
                         <td>{{ prayer.prayer_count }}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
                         <td class="mdl-data-table__cell--non-numeric">
-                            <a href="{{ url_for('edit_prayer', prayer_id=prayer.id) }}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Edit</button></a>
+                            <a href="{{ url_for('admin.edit_prayer', prayer_id=prayer.id) }}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Edit</button></a>
                         </td>
                         <td class="mdl-data-table__cell--non-numeric">
                             <button prayerID="{{ prayer.id }}" class="delete-prayer mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>

@@ -30,9 +30,3 @@ class LoginForm(Form):
         validators.Required(),
         validators.Length(min=4, max=80)
         ])
-
-class EditPrayer(Form):
-    content = StringField('Prayer Content', [
-        validators.Required()
-    ])
-    update = StringField('Update')
