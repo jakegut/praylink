@@ -14,7 +14,8 @@ Praylink uses the Flask web framework, meaning that Python(3.6+) needs to be ins
 1. Activate virtualenv
 1. Run `pip install -r requirements.txt`
 1. Edit `settings.py` to make sure settings are right for Twilio and Google Sheets
-1. (A `.groupy.key` file in your home directoryis needed for GroupMe to work, the only contents of the file are the GroupMe API key)
+1. A `.groupy.key` file in your home directory is needed for GroupMe to work, the only contents of the file are the GroupMe API key
+1. A `client_secret.json` (or whatever) is required for Google Sheets to work, you get this from the Google API Developer console.
 1. Run `python manage.py db init`
 1. Run `python manage.py db migrate`
 1. Run `python manage.py db upgrade`
