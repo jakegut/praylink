@@ -12,6 +12,7 @@
                     <thead>
                         <tr>
                         <th>ID</th>   
+                        <th>Phone Number</th>  
                         <th class="mdl-data-table__cell--non-numeric">Prayer</th>
                         <th>Prayed for count</th>
                         <th class="mdl-data-table__cell--non-numeric">Update</th>
@@ -23,6 +24,7 @@
                         {% for prayer in prayers %}
                         <tr class="prayer-row-{{prayer.id}}">
                         <td>{{ prayer.id }}</td>
+                        <td>{{ prayer.member.phone_number }}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{ prayer.content }}</td>
                         <td>{{ prayer.prayer_count }}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
