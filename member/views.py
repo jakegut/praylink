@@ -1,11 +1,11 @@
 from flask import request, render_template, jsonify, session, redirect, url_for, flash, make_response
 from prayer_bot_flask import app, client, db
-from secrets import randbelow
 from member.models import Member
 from prayer.models import Prayer
 from member.decorators import login_required
 from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm
 import bcrypt
+from random import randint
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -20,7 +20,7 @@ def register():
             return "No phone number, you need to use the service first"
         elif member.id and not member.password:
             session['member_id'] = member.id
-            member_token = randbelow(999999)
+            member_token = randint(111111, 999999)
             member.token = member_token
             db.session.commit()
             client.messages.create(
