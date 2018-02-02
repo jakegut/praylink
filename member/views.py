@@ -135,6 +135,3 @@ def dashboard():
     prayed_for = Prayer.query.filter_by(member_id=member.id).all()
     prayers = member.prayers.all()
     return render_template('member/dashboard.html', prayers=prayers, prayed_for=prayed_for)
-
-
-    
