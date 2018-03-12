@@ -40,7 +40,8 @@ $(document).ready(function(){
     var $grid = $('.masonry-grid').masonry({
      // options
         itemSelector: 'none',
-        columnWidth: 50,
+        columnWidth: 45,
+        gutter: 5,
         fitWidth: true,
         stagger: 30,
         visibleStyle: {

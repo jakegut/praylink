@@ -6,7 +6,7 @@
     <p class="prayer-sent">Sent: {{ prayer.publish_date.strftime('%Y-%m-%d') }}</p>
     <p class="prayed-for-{{ prayer.id }}">Prayed for: {{ prayer.prayer_count }} {% if prayer.prayer_count == 1 %}time{% else %}times{% endif %}
     </p>
-    <button prayerID="{{ prayer.id }}" class="prayed-for-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+    <button prayerID="{{ prayer.id }}" class="prayed-for-button mdl-shadow--2dp mdl-button mdl-js-button mdl-js-ripple-effect">
         Prayed for
     </button>
     {% if prayer.update %}

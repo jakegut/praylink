@@ -1,5 +1,7 @@
 venv/
 migrations/
 __pycache__/
+*.pyc
+celerybeat-*
 *.db
 client_secret.json
