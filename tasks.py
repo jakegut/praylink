@@ -30,10 +30,17 @@ celery_app = make_celery(app)
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
         crontab(minute=00, hour=7, day_of_week=0),
+        # 30.0,
         weekley_digest.s(),
-        name='Weekley Digest'
+        name='Weekly Digest'
     )
 
+    sender.add_periodic_task(
+        # crontab(minute=00, hour=7, day_of_week=3),
+        30.0,
+        update_reminder.s(),
+        name='Update Reminder'
+    )
     # sender.add_periodic_task(30.0, test.s('world'), expires=10)
 
 @celery_app.task
@@ -60,9 +67,24 @@ def weekley_digest():
         )
 
 @celery_app.task
+def update_reminder():
+    seven_days_ago = datetime.datetime.today() - datetime.timedelta(7)
+    members = Member.query.all()
+
+    for member in members:
+        prayer = member.prayers.filter_by(update=None).filter(Prayer.publish_date >= seven_days_ago).first()
+        if prayer:
+            resp = "Your prayer: \'{}\' needs an update. Reply \'update {} [update here]\' to give everyone an update on your prayer!".format(prayer.content, prayer.id)
+            client.messages.create(
+                to=member.phone_number,
+                from_=app.config['TWILIO_NUMBER'],
+                body=resp
+            )
+
+@celery_app.task
 def send_update(prayer_id):
-    prayer = Prayer.query.filter_by(id=prayer_id, subscribe_prayed=True).first()
-    members = prayer.prayed_for
+    prayer = Prayer.query.filter_by(id=prayer_id).first()
+    members = prayer.prayed_for.filter_by(subscribe_prayed=True).all()
     for member in members:
         client.messages.create(
                 to=member.phone_number,

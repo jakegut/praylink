@@ -39,6 +39,9 @@
                 <span class="mdl-layout-title">Praylink</span>
                 <nav class="mdl-navigation">
                 <a class="mdl-navigation__link" href="{{ url_for('index') }}">Prayer Requests</a>
+                {% if session.get('member_id') %}
+                <a class="mdl-navigation__link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                {% endif %}
                 </nav>
             </div>
             <main class="mdl-layout__content">
