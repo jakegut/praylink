@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Member Settings{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset">
+        <h2>Settings</h2>
+
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('settings')}}" role="form">
+
+            <div class="form-slider">
+                <h4>Weekly Digest</h4>
+                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sub_digest" style="float: right">
+                    <span class="mdl-switch__label"></span>
+                    <input type="checkbox" name="sub_digest" id="sub_digest" class="mdl-switch__input" {% if member.subscribe_digest %}checked{% endif %}>
+                </label>
+            </div>
+
+            <div class="form-slider">
+                <h4>Prayer Updates</h4>
+                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sub_updates" style="float: right">
+                    <span class="mdl-switch__label"></span>
+                    <input type="checkbox" name="sub_updates" id="sub_updates" class="mdl-switch__input"{% if member.subscribe_prayed %}checked{% endif %}>
+                </label>
+            </div>
+
+            <div>
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="margin: 0 auto;">Submit</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}
