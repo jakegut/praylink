@@ -3,7 +3,7 @@ from prayer_bot_flask import app, client, db
 from member.models import Member
 from prayer.models import Prayer
 from member.decorators import login_required
-from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm
+from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm
 import bcrypt
 from random import randint
 
@@ -132,6 +132,32 @@ def dashboard():
     member_id = session['member_id']
 
     member = Member.query.filter_by(id=member_id).first()
-    prayed_for = Prayer.query.filter_by(member_id=member.id).all()
+    prayed_for = member.prayed_for
     prayers = member.prayers.all()
     return render_template('member/dashboard.html', prayers=prayers, prayed_for=prayed_for)
+
+@app.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    member_id = session['member_id']
+
+    member = Member.query.filter_by(id=member_id).first()
+
+    if request.method == "POST":
+        sub_digest = 'sub_digest' in request.form
+        sub_update = 'sub_update' in request.form
+
+        if sub_digest:
+            member.subscribe_digest = True
+        else:
+            member.subscribe_digest = False
+
+        if sub_update:
+            member.subscribe_prayed = True
+        else:
+            member.subscribe_prayed = False
+
+        db.session.commit()
+        flash("Successfully Updated!")
+
+    return render_template('member/settings.html', member=member)

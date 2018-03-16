@@ -1,6 +1,7 @@
 .mdl-card{
     max-width: 100%;
 }
+
 .prayer-sent{
     font-weight: 500;
     font-size: 16px;
@@ -10,6 +11,7 @@
     width: 125px;
     margin: 0 auto;
 }
+
 .masonry-grid-item {
     float: left;
     margin-bottom: 30px;
@@ -26,10 +28,23 @@
 
 .page-load-status{
     display: none;
-  }
+}
 
 .page-content {
     max-width: 1200px;
     margin: 0 auto;
     padding-bottom: 400px;
+}
+
+.form-slider {
+    margin-left: 28px;
+    margin-right: 28px;
+    margin-bottom: 15px;
+    *{
+        display: unset;
+    }
+}
+
+.mdl-switch{
+    width: auto;
 }

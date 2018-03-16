@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import validators, StringField, PasswordField, IntegerField
+from wtforms import validators, StringField, PasswordField, IntegerField, BooleanField
 from wtforms.fields.html5 import TelField
 
 class PhoneField(Form):
@@ -30,3 +30,11 @@ class LoginForm(Form):
         validators.Required(),
         validators.Length(min=4, max=80)
         ])
+
+class SettingsForm(Form):
+    sub_digest = BooleanField('Subscribe to Digest',[
+        validators.Required()
+    ])
+    sub_update = BooleanField('Subscribe to Updates on Prayer Requests',[
+        validators.Required()
+    ])
