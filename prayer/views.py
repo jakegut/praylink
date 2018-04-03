@@ -60,7 +60,6 @@ def message():
             resp.message("We couldn't sign you up, try again.")
     else:
         return_string = process_message(body, member)
-        print("Return_string filled.")
         resp.message(return_string)
         
     return str(resp)
@@ -127,6 +126,8 @@ def update_prayer(update_content, member):
             return "Prayer updated successfully!"
         else:
             return "Prayer not found, try again!"
+    else:
+        return "Unable reading the update, try again."
 
 def unsubscribe(option, member):
     if option == "digest":

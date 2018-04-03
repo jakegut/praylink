@@ -1,11 +1,15 @@
 from flask import request, render_template, jsonify, session, redirect, url_for, flash, make_response
 from prayer_bot_flask import app, client, db
+from prayer_bot_flask.tasks import send_update
 from member.models import Member
 from prayer.models import Prayer
 from member.decorators import login_required
-from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm
+from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm, EditPrayer, AddPrayer
 import bcrypt
 from random import randint
+from profanity import profanity
+from utils.spreadsheet_util import add_to_spreadsheet
+from utils.groupme_util import add_to_groupme
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -119,12 +123,9 @@ def login():
 
 @app.route('/logout')
 def logout():
-    if 'member_id' or 'is_admin' in session:
-        session.pop('member_id', None)
-        session.pop('is_admin', None)
-        return redirect(url_for('index'))
-    else:
-        return redirect(url_for('index'))
+    session.pop('member_id', None)
+    session.pop('is_admin', None)
+    return redirect(url_for('index'))
 
 @app.route('/dashboard')
 @login_required
@@ -135,6 +136,61 @@ def dashboard():
     prayed_for = member.prayed_for
     prayers = member.prayers.all()
     return render_template('member/dashboard.html', prayers=prayers, prayed_for=prayed_for)
+
+@app.route('/add', methods=['GET', 'POST'])
+@login_required
+def add_prayer():
+    member_id = session['member_id']
+    member = Member.query.filter_by(id=member_id).first()
+    form = AddPrayer()
+
+    if form.validate_on_submit():
+        content = form.content.data
+        urgent = 'urgent' in request.form
+        if len(content) > 2:
+            new_prayer = Prayer(content, member, None)
+            db.session.add(new_prayer)
+        db.session.flush()
+        if new_prayer.id: 
+            if urgent:
+                if not add_to_groupme(content):
+                    db.session.rollback()
+                    flash("Couldn't add your prayer, try non-urgent.")
+            db.session.commit()
+            add_to_spreadsheet(content)
+            flash("Your prayer was added!")
+            return redirect(url_for('dashboard'))
+        else:
+            db.session.rollback()
+            flash("Your prayer didn't work, try again.")
+    else:
+        flash("Your prayer wasn't long enough.")
+
+    return render_template("member/add_prayer.html", form=form)
+
+
+@app.route('/edit/<int:prayer_id>', methods=['GET', 'POST'])
+@login_required
+def edit_prayer(prayer_id):
+    member_id = session['member_id']
+    prayer = Prayer.query.filter_by(id=prayer_id, member_id=member_id).first()
+    form = EditPrayer()
+    if prayer:
+        if form.validate_on_submit():
+            prayer.content = form.content.data
+            previous_update = prayer.update
+            if form.update.data != 'None':
+                prayer.update = form.update.data
+            db.session.commit()
+            if previous_update != prayer.update:
+                send_update.delay(prayer.id)
+            flash("Prayer updated sucessfully!")
+            return redirect(url_for('dashboard'))
+
+        return render_template("member/edit_prayer.html", form=form, prayer=prayer)
+    else:
+        flash('Prayer not found.')
+        return redirect(url_for('dashboard'))
 
 @app.route('/settings', methods=['GET', 'POST'])
 @login_required

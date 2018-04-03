@@ -38,3 +38,14 @@ class SettingsForm(Form):
     sub_update = BooleanField('Subscribe to Updates on Prayer Requests',[
         validators.Required()
     ])
+
+class EditPrayer(Form):
+    content = StringField('Prayer Content', [
+        validators.Required()
+    ])
+    update = StringField('Update')
+
+class AddPrayer(Form):
+    content = StringField('Prayer Content', [
+        validators.Required()
+    ])

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Add Prayer{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Add Prayer</h3>
+        
+        {% from "_formhelpers.html" import render_field %}
+
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('add_prayer')}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.content, class="mdl-textfield__input") }}
+
+            <div class="form-slider">
+                <h6>Urgent (Send prayer to the GroupMe)</h6>
+                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="urgent" style="float: right">
+                    <span class="mdl-switch__label"></span>
+                    <input type="checkbox" name="urgent" id="urgent" class="mdl-switch__input">
+                </label>
+            </div>
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Add</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}
