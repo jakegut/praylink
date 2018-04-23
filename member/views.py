@@ -11,6 +11,10 @@ from profanity import profanity
 from utils.spreadsheet_util import add_to_spreadsheet
 from utils.groupme_util import add_to_groupme
 
+@app.route('/about')
+def about():
+    return render_template('member/about.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = PhoneField()
@@ -150,21 +154,21 @@ def add_prayer():
         if len(content) > 2:
             new_prayer = Prayer(content, member, None)
             db.session.add(new_prayer)
-        db.session.flush()
-        if new_prayer.id: 
-            if urgent:
-                if not add_to_groupme(content):
-                    db.session.rollback()
-                    flash("Couldn't add your prayer, try non-urgent.")
-            db.session.commit()
-            add_to_spreadsheet(content)
-            flash("Your prayer was added!")
-            return redirect(url_for('dashboard'))
+            db.session.flush()
+            if new_prayer.id: 
+                if urgent:
+                    if not add_to_groupme(content):
+                        db.session.rollback()
+                        flash("Couldn't add your prayer, try non-urgent.")
+                db.session.commit()
+                add_to_spreadsheet(content)
+                flash("Your prayer was added!")
+                return redirect(url_for('dashboard'))
+            else:
+                db.session.rollback()
+                flash("Your prayer didn't work, try again.")
         else:
-            db.session.rollback()
-            flash("Your prayer didn't work, try again.")
-    else:
-        flash("Your prayer wasn't long enough.")
+            flash("Your prayer wasn't long enough.")
 
     return render_template("member/add_prayer.html", form=form)
 

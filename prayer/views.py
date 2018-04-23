@@ -9,12 +9,43 @@ from prayer.models import Prayer
 from member.models import Member
 from utils.spreadsheet_util import add_to_spreadsheet
 from utils.groupme_util import add_to_groupme
+import datetime
+
+@app.before_request
+def before():
+    if 'sort' not in session or 'time' not in session:
+        session['sort'] = 'newest'
+        session['time'] = 'all'
 
 @app.route('/')
 @app.route('/page/<int:page>')
 def index(page=1):
     per_page = app.config['PER_PAGE']
-    prayers = Prayer.query.order_by(Prayer.publish_date.desc()).paginate(page, per_page, False).items
+
+    if request.args.get('sort'):
+        session['sort'] = request.args.get('sort')
+    if request.args.get('time'):
+        session['time'] = request.args.get('time')
+    
+    orders = {
+        'newest': 'publish_date desc',
+        'oldest': 'publish_date asc',
+        'prayed_for': 'prayer_count desc'
+    }
+
+    times = {
+        'day': datetime.timedelta(1),
+        'week': datetime.timedelta(7),
+        'month': datetime.timedelta(30),
+        'all': datetime.timedelta(3000)
+    }
+
+    order = orders[session['sort']]
+    time = times[session['time']]
+
+    days_ago = datetime.datetime.today() - time
+
+    prayers = Prayer.query.filter(Prayer.publish_date >= days_ago).order_by(order).paginate(page, per_page, False).items
     tmpl_name = 'prayer/index.html' if page == 1 else 'prayer/items.html'
     return render_template(tmpl_name, prayers=prayers, page=page)
 

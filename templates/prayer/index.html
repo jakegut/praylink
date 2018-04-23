@@ -6,6 +6,28 @@
     <div class="mdl-grid" style="justify-content: center;">
         <div class="mdl-cell mdl-cell--12-col">
             <h2>Prayer Requests</h2>
+            <form method="GET" action="{{ url_for('index') }}" >
+                <div style="display:inline-block;" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select class="mdl-textfield__input" id="sort" name="sort">
+                      <option value="newest" {{ 'selected' if session['sort'] == 'newest' }}>Newest</option>
+                      <option value="prayed_for" {{ 'selected' if session['sort'] == 'prayed_for' }}>Prayer Count</option>
+                      <option value="oldest" {{ 'selected' if session['sort'] == 'oldest' }}>Oldest</option>
+                    </select>
+                    <label class="mdl-textfield__label" for="sort">Sort prayers by</label>
+                </div>
+                <div style="display:inline-block;" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select class="mdl-textfield__input" id="time" name="time">
+                      <option value="day" {{ 'selected' if session['time'] == 'newest' }}>Day</option>
+                      <option value="week" {{ 'selected' if session['time'] == 'week' }}>Week</option>
+                      <option value="month" {{ 'selected' if session['time'] == 'month' }}>Month</option>
+                      <option value="all" {{ 'selected' if session['time'] == 'all' }}>Beginning of Time</option>
+                    </select>
+                    <label class="mdl-textfield__label" for="time">Show Prayers From:</label>
+                </div>
+                <div style=" display:inline-block">
+                    <button style="display: inline;" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Refresh</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="masonry-grid" style="justify-content: center;">
