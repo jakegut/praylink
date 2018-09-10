@@ -1,5 +1,18 @@
+body{
+    background-image: url("https://wallpapershome.com/images/wallpapers/yosemite-wallpaper-2560x1440-5k-4k-wallpaper-8k-forest-osx-apple-mountains-181.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .mdl-card{
     max-width: 100%;
+    background-color: rgba(#ffffff, 0.9);
+}
+
+fake-card{
+    background: white;
+    border-radius: 2px;
 }
 
 .prayer-sent{

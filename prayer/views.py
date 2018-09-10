@@ -150,7 +150,7 @@ def update_prayer(update_content, member):
 
     if isinstance(prayer_id, int) and len(update_content) > 2:
         prayer = Prayer.query.filter_by(id=prayer_id, member_id=member.id).first()
-        if prayer.id:
+        if prayer:
             prayer.update = update_content
             db.session.commit()
             send_update.delay(prayer_id)

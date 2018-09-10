@@ -1,12 +1,12 @@
 Flask==0.10.1
-Flask_WTF==0.12
-Flask_Script==2.0.5
-Flask_Migrate==1.6.0
-Flask_SQLAlchemy==2.1
+Flask-WTF==0.12
+Flask-Script==2.0.5
+Flask-Migrate==1.6.0
+Flask-SQLAlchemy==2.1
 alembic==0.9.6
 WTForms==2.1
 twilio==6.5.2
-celery==4.1.0
+celery==4.2.0
 SQLAlchemy==1.1.15
 python_bcrypt==0.3.2
 profanity==1.1
