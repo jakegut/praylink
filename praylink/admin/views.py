@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, flash, redirect, url_for
+from flask import Flask, Blueprint, render_template, session, flash, redirect, url_for, g, make_response, jsonify
 from prayer_bot_flask import db
 from member.models import Member
 from prayer.models import Prayer
@@ -40,4 +40,4 @@ def delete_prayer(prayer_id):
         return jsonify({"message": "Prayer deleted successfully", "prayer_id": prayer_id})
     except:
         db.session.rollback()
-        return make_resonse(jsonify({"message": "Prayer was not deleted", "prayer_id": prayer_id}), 500)
+        return make_response(jsonify({"message": "Prayer was not deleted", "prayer_id": prayer_id}), 500)

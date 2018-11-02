@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, session
+from flask import request, render_template, jsonify, session, g
 from prayer_bot_flask import app
 from twilio.twiml.messaging_response import MessagingResponse
 from prayer_bot_flask import db
@@ -16,6 +16,10 @@ def before():
     if 'sort' not in session or 'time' not in session:
         session['sort'] = 'newest'
         session['time'] = 'all'
+    if 'is_admin' in session:
+        reported_prayers = Prayer.query.filter(Prayer.report_count > 0).count()
+        g.reported_prayers = reported_prayers
+
 
 @app.route('/')
 @app.route('/page/<int:page>')
@@ -68,6 +72,23 @@ def prayed_for(prayer_id):
         return jsonify({'success': 'success', 'prayer_count': prayer.prayer_count})
     else:
         return jsonify({'error': 'error'})
+
+@app.route("/report/<int:prayer_id>", methods=['POST'])
+def report_prayer(prayer_id):
+    prayer = Prayer.query.filter_by(id=prayer_id).first()
+    if prayer.id:
+        prayer.report_count += 1
+        db.session.commit()
+        return jsonify({"message": "Prayer successfully reported"})
+    else:
+        return jsonify({"error": "Prayer could not be found"})
+        
+
+################################
+#
+# Start Bot Code
+#
+################################
 
 @app.route('/message', methods=['POST'])
 def message():

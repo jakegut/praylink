@@ -15,6 +15,7 @@
                         <th>Phone Number</th>  
                         <th class="mdl-data-table__cell--non-numeric">Prayer</th>
                         <th>Prayed for count</th>
+                        <th>Reported</th>
                         <th class="mdl-data-table__cell--non-numeric">Update</th>
                         <th class="mdl-data-table__cell--non-numeric">Edit</th>
                         <th class="mdl-data-table__cell--non-numeric">Delete</th>
@@ -27,6 +28,7 @@
                         <td>{{ prayer.member.phone_number }}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{ prayer.content }}</td>
                         <td>{{ prayer.prayer_count }}</td>
+                        <td>{{ prayer.report_count }}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{ prayer.update }}</td>
                         <td class="mdl-data-table__cell--non-numeric">
                             <a href="{{ url_for('admin.edit_prayer', prayer_id=prayer.id) }}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Edit</button></a>

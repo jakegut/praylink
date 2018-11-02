@@ -1,9 +1,6 @@
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from flask_script import Manager, Server
 from flask_migrate import MigrateCommand
-from prayer_bot_flask import app, db
+from praylink import app, db
 
 manager = Manager(app)
 

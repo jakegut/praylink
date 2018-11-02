@@ -7,9 +7,10 @@ class Prayer(db.Model):
     prayer_count = db.Column(db.Integer)
     publish_date = db.Column(db.DateTime)
     update = db.Column(db.Text)
+    report_count = db.Column(db.Integer)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'))
 
-    def __init__(self, content, member, publish_date, update=None, prayer_count=0):
+    def __init__(self, content, member, publish_date, update=None, prayer_count=0, report_count=0):
         self.content = content
         self.member_id = member.id
         if publish_date is None:
@@ -18,6 +19,7 @@ class Prayer(db.Model):
             self.publish_date = publish_date
         self.update = update
         self.prayer_count = prayer_count
+        self.report_count = report_count
 
     def __repr__(self):
         return '<Prayer %r>' % self.content

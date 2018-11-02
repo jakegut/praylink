@@ -1,0 +1,59 @@
+body {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+  .mdl-card {
+    max-width: 100%;
+    background-color: rgba(255, 255, 255, 0.9); }
+
+    .mdl-badge[data-badge]:after {
+      top: 4px;
+      right: -4px; }
+
+      fake-card {
+        background: white;
+        border-radius: 2px; }
+
+        .prayer-options {
+          position: absolute;
+          right: 5px; }
+
+          .prayer-sent {
+            font-weight: 500;
+            font-size: 16px; }
+
+            .prayed-for-button {
+              width: 125px;
+              margin: 0 auto; }
+
+              .masonry-grid-item {
+                float: left;
+                margin-bottom: 30px;
+                margin: "0 auto";
+                visibility: hidden; }
+
+                .are-images-ready .masonry-grid-item {
+                  visibility: visible; }
+
+                  .masonry-grid {
+                    min-height: 600px;
+                    margin: 0 auto; }
+
+                    .page-load-status {
+                      display: none; }
+
+                      .page-content {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding-bottom: 400px; }
+
+                        .form-slider {
+                          margin-left: 28px;
+                          margin-right: 28px;
+                          margin-bottom: 15px; }
+                          .form-slider * {
+                            display: unset; }
+
+.mdl-switch {
+  width: auto; }

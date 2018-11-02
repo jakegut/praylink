@@ -6,3 +6,4 @@ celerybeat-*
 *.db
 client_secret.json
 .vscode
+settings.py

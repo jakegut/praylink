@@ -16,7 +16,7 @@
         
     </head>
     <body>
-            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                 <!-- Title -->
@@ -32,7 +32,11 @@
                     <a class="mdl-navigation__link" href="{{ url_for('register') }}">Signup</a>
                     {% endif %}
                     {% if session.get('is_admin') %}
-                    <a class="mdl-navigation__link" href="{{ url_for('admin.index') }}">Admin</a>
+                    <a class="mdl-navigation__link mdl-badge" 
+                        {% if g.get('reported_prayers') and g.reported_prayers > 0  %} 
+                            data-badge="{{ g.reported_prayers }}" 
+                        {% endif %}
+                        href="{{ url_for('admin.index') }}">Admin</a>
                     {% endif %}
                 </nav>
                 </div>
@@ -58,7 +62,20 @@
                         </div>
                 </div>
             </main>
-          </div>
+        </div>
+
+        <dialog class="mdl-dialog">
+            <h4 class="mdl-dialog__title">Report Prayer</h4>
+            <div class="mdl-dialog__content">
+                <p id="prayer-text-report">
+                ??
+                </p>
+            </div>
+            <div class="mdl-dialog__actions">
+                <button type="button" class="mdl-button report-button">Submit</button>
+                <button type="button" class="mdl-button close">Cancel</button>
+            </div>
+        </dialog>
         
         
         <!-- Jquery for Bootstrap -->
@@ -93,7 +110,9 @@
         <script>
             $(document).ready( function () {
                 $('#admin-table').DataTable( {
+                    "order": [[ 4, "desc" ]],
                     "columns": [
+                        null,
                         null,
                         null,
                         null,
@@ -103,6 +122,7 @@
                         { "orderable": false }
                     ],
                 });
+
             });
         </script>
     </body>

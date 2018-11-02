@@ -1,0 +1,29 @@
+<div class="masonry-grid-item mdl-typography--text-center">
+    <div class="mdl-card mdl-shadow--2dp mdl-cell--middle" style="margin: 0 auto;">
+
+        <button id="menu-{{ prayer.id }}"
+                class="mdl-button mdl-js-button mdl-button--icon prayer-options">
+        <i class="material-icons">more_vert</i>
+        </button>
+        
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+            data-mdl-for="menu-{{ prayer.id }}">
+            <li class="mdl-menu__item report-prayer" prayer-id="{{ prayer.id }}">Report</li>
+        </ul>
+
+        <div class="prayer-content">
+            <h5 id="prayer-{{ prayer.id }}">{{ prayer.content }}</h5>
+        </div>
+        <p class="prayer-sent">Sent: {{ prayer.publish_date.strftime('%Y-%m-%d') }}</p>
+        <p class="prayed-for-{{ prayer.id }}">Prayed for: {{ prayer.prayer_count }} {% if prayer.prayer_count == 1 %}time{% else %}times{% endif %}
+        </p>
+        <button prayerID="{{ prayer.id }}" class="prayed-for-button mdl-shadow--2dp mdl-button mdl-js-button mdl-js-ripple-effect">
+            Prayed for
+        </button>
+        {% if prayer.update %}
+            <div style="margin-top: 16px;">
+                <b>Update:</b> <p>{{ prayer.update }}</p>
+            </div>
+        {% endif %}
+    </div>
+</div>

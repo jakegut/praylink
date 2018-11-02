@@ -1,5 +1,5 @@
 body{
-    background-image: url("https://wallpapershome.com/images/wallpapers/yosemite-wallpaper-2560x1440-5k-4k-wallpaper-8k-forest-osx-apple-mountains-181.jpg");
+    // background-image: url("https://wallpapershome.com/images/wallpapers/yosemite-wallpaper-2560x1440-5k-4k-wallpaper-8k-forest-osx-apple-mountains-181.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -10,9 +10,20 @@ body{
     background-color: rgba(#ffffff, 0.9);
 }
 
+.mdl-badge[data-badge]:after{
+    top: 4px;
+    right: -4px;
+}
+
 fake-card{
     background: white;
     border-radius: 2px;
+}
+
+.prayer-options{
+    position: absolute;
+    right: 5px;
+
 }
 
 .prayer-sent{
