@@ -1,8 +1,8 @@
 from flask import Flask, Blueprint, render_template, session, flash, redirect, url_for, g, make_response, jsonify
-from prayer_bot_flask import db
-from member.models import Member
-from prayer.models import Prayer
-from admin.form import EditPrayer
+from praylink import db
+from praylink.member.models import Member
+from praylink.prayer.models import Prayer
+from praylink.admin.form import EditPrayer
 
 admin_blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 

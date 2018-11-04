@@ -1,14 +1,14 @@
 from flask import request, render_template, jsonify, session, g
-from prayer_bot_flask import app
+from praylink import app
 from twilio.twiml.messaging_response import MessagingResponse
-from prayer_bot_flask import db
-from prayer_bot_flask.tasks import send_update
+from praylink import db
+from praylink.tasks import send_update
 from sqlalchemy import exc
 from profanity import profanity 
-from prayer.models import Prayer
-from member.models import Member
-from utils.spreadsheet_util import add_to_spreadsheet
-from utils.groupme_util import add_to_groupme
+from praylink.prayer.models import Prayer
+from praylink.member.models import Member
+from praylink.utils.spreadsheet_util import add_to_spreadsheet
+from praylink.utils.groupme_util import add_to_groupme
 import datetime
 
 @app.before_request

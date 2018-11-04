@@ -1,13 +1,10 @@
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import datetime
 
 from celery import Celery
 from celery.schedules import crontab
-from prayer_bot_flask import app, client
-from prayer.models import Prayer
-from member.models import Member
+from praylink import app, client
+from praylink.prayer.models import Prayer
+from praylink.member.models import Member
 
 # COMMAND TO RUN CELERY BEAT (periodic tasks): venv\Scripts\celery.exe -A tasks:celery_app beat --loglevel=INFO
 # COMMAND TO RUN CELERY (windows): venv\Scripts\celery.exe -A tasks.celery_app worker -P eventlet

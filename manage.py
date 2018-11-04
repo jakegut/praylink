@@ -1,3 +1,4 @@
+import os
 from flask_script import Manager, Server
 from flask_migrate import MigrateCommand
 from praylink import app, db

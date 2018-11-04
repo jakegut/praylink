@@ -1,15 +1,15 @@
 from flask import request, render_template, jsonify, session, redirect, url_for, flash, make_response
-from prayer_bot_flask import app, client, db
-from prayer_bot_flask.tasks import send_update
-from member.models import Member
-from prayer.models import Prayer
-from member.decorators import login_required
-from member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm, EditPrayer, AddPrayer
+from praylink import app, client, db
+from praylink.tasks import send_update
+from praylink.member.models import Member
+from praylink.prayer.models import Prayer
+from praylink.member.decorators import login_required
+from praylink.member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm, EditPrayer, AddPrayer
 import bcrypt
 from random import randint
 from profanity import profanity
-from utils.spreadsheet_util import add_to_spreadsheet
-from utils.groupme_util import add_to_groupme
+from praylink.utils.spreadsheet_util import add_to_spreadsheet
+from praylink.utils.groupme_util import add_to_groupme
 
 @app.route('/about')
 def about():

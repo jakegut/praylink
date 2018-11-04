@@ -1,4 +1,4 @@
-from prayer_bot_flask import db
+from praylink import db
 from datetime import datetime
 
 class Prayer(db.Model):

@@ -1,5 +1,5 @@
-from prayer_bot_flask import db
-from prayer.models import prayed_for
+from praylink import db
+from praylink.prayer.models import prayed_for
 
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)

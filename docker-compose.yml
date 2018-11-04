@@ -1,0 +1,25 @@
+version: '2'
+services:
+    web:
+        build: .
+        ports:
+            - "5000:5000"
+        volumes:
+            - '.:/code'
+        depends_on:
+            - redis
+    redis:
+        image: 'redis:3.0-alpine'
+        command: redis-server --requirepass devpassword
+        volumes:
+          - 'redis:/var/lib/redis/data'
+        ports:
+          - '6379:6379'
+    celery:
+        build: .
+        command: celery worker -B -l info -A praylink.tasks.celery_app 
+        volumes:
+          - '.:/code'
+
+volumes:
+  redis:
