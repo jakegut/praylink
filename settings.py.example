@@ -1,0 +1,19 @@
+import os
+
+SECRET_KEY="asdf" # Use your own
+DEBUG = True
+PER_PAGE = 10
+# DB_USERNAME = ''
+# DB_PASSWORD = ''
+# BLOG_DB_NAME = ''
+# DB_HOST = os.getenv("IP", '0.0.0.0')
+# DB_URI = "mysql+pymysql://%s:%s@%s/%s" % (DB_USERNAME, DB_PASSWORD, DB_HOST, BLOG_DB_NAME)
+db_path = os.path.join(os.path.dirname(__file__), 'app.db')
+db_uri = 'sqlite:///{}'.format(db_path)
+SQLALCHEMY_DATABASE_URI = db_uri
+CELERY_BROKER = "redis://:devpassword@redis:6379/0"
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+TWILIO_NUMBER = ""
+TWILIO_ACCOUNT_SID = ""
+TWILIO_AUTH_TOKEN = ""
+GROUPME_TOKEN = ""
