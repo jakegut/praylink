@@ -108,7 +108,7 @@ def message():
 
         if new_member.id:
             db.session.commit()
-            resp.message("Welcome to Central Baptist Youth Ministry's prayer request program. Text 'pray [prayer here]' to submit a prayer or 'commands' to learn what you can do!")
+            resp.message("Welcome to (ChurchName)'s prayer request program. Text 'pray [prayer here]' to submit a prayer or 'commands' to learn what you can do!")
         else:
             db.session.rollback()
             resp.message("We couldn't sign you up, try again.")
