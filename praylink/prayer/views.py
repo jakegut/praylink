@@ -44,12 +44,12 @@ def index(page=1):
         'all': datetime.timedelta(3000)
     }
 
-    order = orders[session['sort']]
+    order = str(orders[session['sort']])
     time = times[session['time']]
 
     days_ago = datetime.datetime.today() - time
 
-    prayers = Prayer.query.filter(Prayer.publish_date >= days_ago).order_by(order).paginate(page, per_page, False).items
+    prayers = Prayer.query.filter(Prayer.publish_date >= days_ago).order_by(str(order)).paginate(page, per_page, False).items
     tmpl_name = 'prayer/index.html' if page == 1 else 'prayer/items.html'
     return render_template(tmpl_name, prayers=prayers, page=page)
 

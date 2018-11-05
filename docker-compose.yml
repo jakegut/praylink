@@ -1,11 +1,14 @@
-version: '2'
+version: '3'
 services:
     web:
         build: .
         ports:
             - "5000:5000"
+        command: python manage.py runserver
         volumes:
-            - '.:/code'
+            - '.:/app'
+        environment:
+            - FLASK_ENV=development
         depends_on:
             - redis
     redis:
@@ -19,7 +22,7 @@ services:
         build: .
         command: celery worker -B -l info -A praylink.tasks.celery_app 
         volumes:
-          - '.:/code'
+          - '.:/app'
 
 volumes:
   redis:

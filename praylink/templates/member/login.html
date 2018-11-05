@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="mdl-grid">
-    <div class="mdl-cell mdl-shadow--2dp mdl-card mdl-cell--4-col mdl-cell--4-offset">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset mdl-cell--2-offset-tablet">
         <h3>Login</h3>
         
         {% from "_formhelpers.html" import render_field %}
@@ -20,7 +20,7 @@
             
             {{ render_field(form.phone_number, class="mdl-textfield__input") }}
             {{ render_field(form.password, class="mdl-textfield__input") }}
-
+            <br>
             <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Login</button>
             
         </form>

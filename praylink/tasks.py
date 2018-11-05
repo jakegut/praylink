@@ -33,8 +33,8 @@ def setup_periodic_tasks(sender, **kwargs):
     )
 
     sender.add_periodic_task(
-        # crontab(minute=00, hour=7, day_of_week=3),
-        30.0,
+        crontab(minute=00, hour=7, day_of_week=3),
+        # 30.0,
         update_reminder.s(),
         name='Update Reminder'
     )
