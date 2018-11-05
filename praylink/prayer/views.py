@@ -101,6 +101,8 @@ def message():
 
     if not member:
         new_member = Member(phone_number)
+        if Member.query.count() == 0:
+            new_member.is_admin = True
         db.session.add(new_member)
         db.session.flush()
 

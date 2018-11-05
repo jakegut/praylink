@@ -19,3 +19,5 @@ Recently, the project has been "Dockerized" making it more easy to develop and f
 5. Run `docker-compose exec web python manage.py migrate`
 6. Run `docker-compose exec web python manage.py upgrade`
 7. Develop! (Or whatever)
+
+As of right now, to sign-up you need to text the number. The first person to sign-up is admin, as of right now.
