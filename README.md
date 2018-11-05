@@ -10,14 +10,12 @@ Prayer requests are added to Google Spreadsheet, and if it's an "urgent" prayer 
 ## Installation
 Praylink uses the Flask web framework, meaning that Python(3.6+) needs to be installed. It also uses celery for regular and periodic tasks, but it is not necessary for development unless certain features need to be tested.
 
-1. It is prefered to use a vitrualenv for development, so follow steps to do that first
-1. Activate virtualenv
-1. Run `pip install -r requirements.txt`
-1. Edit `settings.py` to make sure settings are right for Twilio and Google Sheets
-1. A `.groupy.key` file in your home directory is needed for GroupMe to work, the only contents of the file are the GroupMe API key
-1. A `client_secret.json` (or whatever) is required for Google Sheets to work, you get this from the Google API Developer console.
-1. Run `python manage.py db init`
-1. Run `python manage.py db migrate`
-1. Run `python manage.py db upgrade`
-1. Finally, run `python manage.py runserver`
-1. If you're using celery, use the executable in your virtualenv, adapt as needed: `venv\Scripts\celery.exe -A tasks.celery_app worker -l info -P eventlet`
+Recently, the project has been "Dockerized" making it more easy to develop and for more people to get involved.
+
+1. Change `settings.py.example` into `settings.py` and configure it
+2. Get a `client_secret.json` file from Google API Developer Console for Google Sheets, and put that in the `/praylink` folder
+3. Run `docker-compose up --build`
+4. Run `docker-compose exec web python manage.py init`
+5. Run `docker-compose exec web python manage.py migrate`
+6. Run `docker-compose exec web python manage.py upgrade`
+7. Develop! (Or whatever)
