@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, session, g
+from flask import request, render_template, jsonify, session, g, redirect, url_for
 from praylink import app
 from twilio.twiml.messaging_response import MessagingResponse
 from praylink import db
@@ -7,6 +7,7 @@ from sqlalchemy import exc
 from profanity import profanity 
 from praylink.prayer.models import Prayer
 from praylink.member.models import Member
+from praylink.group.models import Group
 from praylink.utils.spreadsheet_util import add_to_spreadsheet
 from praylink.utils.groupme_util import add_to_groupme
 import datetime
@@ -20,10 +21,24 @@ def before():
         reported_prayers = Prayer.query.filter(Prayer.report_count > 0).count()
         g.reported_prayers = reported_prayers
 
+    group = Group.query.first()
+
+    if group.id:
+        g.web_title = group.title
+        g.phone_number = group.twilio_number
+    else:
+        g.web_title = "Praylink"
+
 
 @app.route('/')
 @app.route('/page/<int:page>')
 def index(page=1):
+    if Member.query.count() == 0:
+        return redirect('register')
+    elif Group.query.count() == 0:
+        return redirect(url_for('new_group'))
+    
+
     per_page = app.config['PER_PAGE']
 
     if request.args.get('sort'):
@@ -94,10 +109,12 @@ def report_prayer(prayer_id):
 def message():
     body = request.values.get('Body')
     phone_number = request.values.get('From')
+    group_phone = request.values.get('To')
 
     resp = MessagingResponse()
 
     member = Member.query.filter_by(phone_number=phone_number).first()
+    group = Group.query.filter_by(twilio_number=group_phone).first()
 
     if not member:
         new_member = Member(phone_number)
@@ -108,17 +125,17 @@ def message():
 
         if new_member.id:
             db.session.commit()
-            resp.message("Welcome to (ChurchName)'s prayer request program. Text 'pray [prayer here]' to submit a prayer or 'commands' to learn what you can do!")
+            resp.message("Welcome to %s's prayer request program. Text 'pray [prayer here]' to submit a prayer or 'commands' to learn what you can do!" % group.title)
         else:
             db.session.rollback()
             resp.message("We couldn't sign you up, try again.")
     else:
-        return_string = process_message(body, member)
+        return_string = process_message(body, member, group)
         resp.message(return_string)
         
     return str(resp)
 
-def process_message(message, member):
+def process_message(message, member, group):
     message = message.split(" ", 1)
 
     command = message[0].lower()
@@ -128,11 +145,11 @@ def process_message(message, member):
         prayer_content = ""
 
     if command == "pray":
-        return process_prayer(prayer_content, member)
+        return process_prayer(prayer_content, member, group)
     elif command == "urgent":
-        return process_prayer(prayer_content, member, True)
+        return process_prayer(prayer_content, member, group, True)
     elif command == "update":
-        return update_prayer(prayer_content, member)
+        return update_prayer(prayer_content, member, group)
     elif command == "unsubscribe":
         return unsubscribe(prayer_content, member)
     elif command == "subscribe":
@@ -142,19 +159,18 @@ def process_message(message, member):
     else:
         return "Command not found. Reply 'commands' for a list of commands."
 
-def process_prayer(prayer_content, member, urgent=False):
+def process_prayer(prayer_content, member, group, urgent=False):
     if len(prayer_content) > 2:
         prayer_content = profanity.censor(prayer_content)
-        new_prayer = Prayer(prayer_content, member, None)
+        new_prayer = Prayer(prayer_content, member, group, None)
         db.session.add(new_prayer)
         db.session.flush()
         if new_prayer.id: 
             if urgent:
-                if not add_to_groupme(prayer_content):
+                if not add_to_groupme(prayer_content, group):
                     db.session.rollback()
                     return "Couldn't add your prayer, try non-urgent."
             db.session.commit()
-            add_to_spreadsheet(prayer_content)
             return "Your prayer was received!"
         else:
             db.session.rollback()
@@ -162,7 +178,7 @@ def process_prayer(prayer_content, member, urgent=False):
     else:
         return "Your prayer wasn't long enough."
 
-def update_prayer(update_content, member):
+def update_prayer(update_content, member, group):
     update_content = update_content.split(" ", 1)
 
     prayer_id = int(update_content[0].lower())
@@ -172,7 +188,7 @@ def update_prayer(update_content, member):
         return "Update not long enough, try again!"
 
     if isinstance(prayer_id, int) and len(update_content) > 2:
-        prayer = Prayer.query.filter_by(id=prayer_id, member_id=member.id).first()
+        prayer = Prayer.query.filter_by(id=prayer_id, member_id=member.id, group=group.id).first()
         if prayer:
             prayer.update = update_content
             db.session.commit()

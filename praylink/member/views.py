@@ -5,6 +5,7 @@ from praylink.member.models import Member
 from praylink.prayer.models import Prayer
 from praylink.member.decorators import login_required
 from praylink.member.form import PhoneField, ValidateNumberForm, PasswordForm, LoginForm, SettingsForm, EditPrayer, AddPrayer
+from praylink.group.models import Group
 import bcrypt
 from random import randint
 from profanity import profanity
@@ -25,8 +26,13 @@ def register():
         member = Member.query.filter_by(phone_number=phone_number).first()
 
         if member is None:
-            return "No phone number, you need to use the service first"
-        elif member.id and not member.password:
+            member = Member(phone_number)
+            if Member.query.count()  == 0:
+                member.is_admin = True
+            db.session.add(member)
+            db.session.flush()
+
+        if member.id and not member.password:
             session['member_id'] = member.id
             member_token = randint(111111, 999999)
             member.token = member_token
@@ -38,7 +44,8 @@ def register():
             )
             return redirect(url_for('validate'))
         elif member.id and member.password:
-            return "Already have a password"
+            print(member.id)
+            error = "Already have a password"
             
 
     return render_template('member/register.html', form=form, error=error)
@@ -117,6 +124,8 @@ def login():
                 session['member_id'] = member.id
                 session['is_admin'] = member.is_admin
                 print ("Member: {}; is_admin: {}".format(phone_number, member.is_admin))
+                if Group.query.count() == 0:
+                    return redirect(url_for('new_group'))
                 return redirect(url_for('index'))
             else:
                 error = "Incorrect phone number or password"

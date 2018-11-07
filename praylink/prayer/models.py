@@ -9,10 +9,12 @@ class Prayer(db.Model):
     update = db.Column(db.Text)
     report_count = db.Column(db.Integer)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
-    def __init__(self, content, member, publish_date, update=None, prayer_count=0, report_count=0):
+    def __init__(self, content, member, group, publish_date, update=None, prayer_count=0, report_count=0):
         self.content = content
         self.member_id = member.id
+        self.group_id = group.id
         if publish_date is None:
             self.publish_date = datetime.utcnow()
         else:

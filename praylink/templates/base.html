@@ -20,7 +20,7 @@
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                 <!-- Title -->
-                <span class="mdl-layout-title">Praylink</span>
+                <span class="mdl-layout-title">{{ g.web_title }}</span>
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation. We hide it in small screens. -->
@@ -42,12 +42,16 @@
                 </div>
             </header>
             <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">Praylink</span>
+                <span class="mdl-layout-title">{{ g.web_title }}</span>
                 <nav class="mdl-navigation">
                 <a class="mdl-navigation__link" href="{{ url_for('index') }}">Prayer Requests</a>
                 <a class="mdl-navigation__link" href="{{ url_for('about') }}">About</a>
                 {% if session.get('member_id') %}
                 <a class="mdl-navigation__link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                {% endif %}
+                {% if session.get('is_admin') == true %}
+                <hr />
+                <a class="mdl-navigation__link" href="{{ url_for('edit_group') }}">Edit Group</a>
                 {% endif %}
                 </nav>
             </div>

@@ -21,10 +21,12 @@ client = Client(account_sid, auth_token)
 #import models
 from praylink.prayer.models import Prayer, prayed_for
 from praylink.member.models import Member
+from praylink.group.models import Group
 
 #Register Views
 from praylink.prayer import views
 from praylink.member import views
+from praylink.group import views
 
 #Register Blueprints
 from praylink.admin.views import admin_blueprint

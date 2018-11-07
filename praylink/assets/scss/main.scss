@@ -52,12 +52,15 @@ fake-card{
 
 .page-load-status{
     display: none;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 30px;
 }
 
 .page-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding-bottom: 400px;
+    // padding-bottom: 400px;
 }
 
 .form-slider {

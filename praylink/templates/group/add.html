@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Make Group{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset mdl-cell--2-offset-tablet">
+        <h3>Make Group</h3>
+        
+        {% from "_formhelpers.html" import render_field %}
+
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('new_group')}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.group_name, class="mdl-textfield__input") }}
+            {{ render_field(form.phone_number, class="mdl-textfield__input") }}
+            {{ render_field(form.twilio_sid, class="mdl-textfield__input") }}
+            {{ render_field(form.twilio_token, class="mdl-textfield__input") }}
+            {{ render_field(form.groupme_token, class="mdl-textfield__input") }}
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Make Group</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

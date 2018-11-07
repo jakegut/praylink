@@ -41,12 +41,14 @@ body {
                     margin: 0 auto; }
 
                     .page-load-status {
-                      display: none; }
+                      display: none;
+                      margin: 0 auto;
+                      text-align: center;
+                      font-size: 30px; }
 
                       .page-content {
                         max-width: 1200px;
-                        margin: 0 auto;
-                        padding-bottom: 400px; }
+                        margin: 0 auto; }
 
                         .form-slider {
                           margin-left: 28px;

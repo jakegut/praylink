@@ -7,10 +7,19 @@ services:
         command: python manage.py runserver
         volumes:
             - '.:/app'
-        environment:
-            - FLASK_ENV=development
+        env_file:
+            - '.env'
         depends_on:
             - redis
+
+    postgres:
+        image: 'postgres:9.5'
+        env_file:
+            - '.env'
+        volumes:
+            - 'postgres:/var/lib/postgresql/data'
+        ports:
+            - '5432:5432'
     redis:
         image: 'redis:3.0-alpine'
         command: redis-server --requirepass devpassword
@@ -20,9 +29,12 @@ services:
           - '6379:6379'
     celery:
         build: .
-        command: celery worker -B -l info -A praylink.tasks.celery_app 
+        command: celery worker -B -l info -A praylink.tasks.celery_app
+        env_file:
+            - '.env'
         volumes:
           - '.:/app'
 
 volumes:
   redis:
+  postgres:
