@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 # add app
 COPY . .
 
-CMD python manage.py runserver
+CMD gunicorn -b 0.0.0.0:5000 --reload "praylink:app"

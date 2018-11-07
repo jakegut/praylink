@@ -23,7 +23,7 @@ def before():
 
     group = Group.query.first()
 
-    if group.id:
+    if group:
         g.web_title = group.title
         g.phone_number = group.twilio_number
     else:

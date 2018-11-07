@@ -4,7 +4,8 @@ services:
         build: .
         ports:
             - "5000:5000"
-        command: python manage.py runserver
+        command: >
+            gunicorn -b 0.0.0.0:5000 --reload "praylink:app"
         volumes:
             - '.:/app'
         env_file:
@@ -17,7 +18,7 @@ services:
         env_file:
             - '.env'
         volumes:
-            - 'postgres:/var/lib/postgresql/data'
+            - 'postgres_pl:/var/lib/postgresql/data'
         ports:
             - '5432:5432'
     redis:
@@ -37,4 +38,4 @@ services:
 
 volumes:
   redis:
-  postgres:
+  postgres_pl:

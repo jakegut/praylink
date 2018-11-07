@@ -34,6 +34,10 @@ def register():
 
         if member.id and not member.password:
             session['member_id'] = member.id
+            if Group.query.count() == 0:
+                db.session.commit()
+                session['verified'] = True
+                return redirect(url_for('signup'))
             member_token = randint(111111, 999999)
             member.token = member_token
             db.session.commit()

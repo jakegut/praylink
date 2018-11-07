@@ -20,4 +20,4 @@ class Group(db.Model):
         self.groupme_bid = None
 
     def __repr__(self):
-        print("<Group %s>" % self.name)
+        print("<Group %s>" % self.title)
