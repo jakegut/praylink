@@ -1,17 +1,18 @@
 version: '3'
 services:
-    web:
+    praylink:
         build: .
         ports:
             - "5000:5000"
         command: >
-            gunicorn -b 0.0.0.0:5000 --reload "praylink:app"
+            gunicorn -b :5000 --name praylink --reload "praylink:app"
         volumes:
             - '.:/app'
         env_file:
             - '.env'
         depends_on:
-            - redis
+            - celery
+            - postgres
 
     postgres:
         image: 'postgres:9.5'
@@ -21,6 +22,7 @@ services:
             - 'postgres_pl:/var/lib/postgresql/data'
         ports:
             - '5432:5432'
+    
     redis:
         image: 'redis:3.0-alpine'
         command: redis-server --requirepass devpassword
@@ -28,13 +30,26 @@ services:
           - 'redis:/var/lib/redis/data'
         ports:
           - '6379:6379'
+    
     celery:
         build: .
         command: celery worker -B -l info -A praylink.tasks.celery_app
         env_file:
-            - '.env'
+          - '.env'
         volumes:
           - '.:/app'
+        depends_on:
+          - redis
+
+    nginx:
+        build: ./nginx/
+        restart: always
+        ports:
+           - "80:80"
+        volumes:
+           - /www/static
+        links:
+            - praylink 
 
 volumes:
   redis:
