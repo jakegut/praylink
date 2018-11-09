@@ -49,7 +49,7 @@ services:
         volumes:
            - /www/static
         links:
-            - praylink 
+            - praylink
 
 volumes:
   redis:

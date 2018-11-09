@@ -11,6 +11,7 @@ from random import randint
 from profanity import profanity
 from praylink.utils.spreadsheet_util import add_to_spreadsheet
 from praylink.utils.groupme_util import add_to_groupme
+from praylink.utils.twilio_util import send_twilio
 
 @app.route('/about')
 def about():
@@ -90,6 +91,8 @@ def signup():
     if 'verified' in session:
         if session['verified'] == False:
             return redirect(url_for('register'))
+    else:
+        return redirect(url_for('register'))
 
     if 'member_id' in session:
         member_id = session['member_id']
@@ -103,10 +106,13 @@ def signup():
 
         if member is None:
             return redirect(url_for('register'))
-        elif member.password:
+        elif member.forgot_password is False and member.password:
+            session.pop('verified', None)
+            session.pop('member_id', None)
             return redirect(url_for('login'))
         else:
             member.password = hashed_password
+            member.forgot = False
             db.session.commit()
             session.pop('verified', None)
             session.pop('member_id', None)
@@ -127,6 +133,7 @@ def login():
             if bcrypt.hashpw(form.password.data, member.password) == member.password:
                 session['member_id'] = member.id
                 session['is_admin'] = member.is_admin
+                session['verified'] = False
                 print ("Member: {}; is_admin: {}".format(phone_number, member.is_admin))
                 if Group.query.count() == 0:
                     return redirect(url_for('new_group'))
@@ -137,6 +144,35 @@ def login():
             error = "Incorrect phone number or password"
 
     return render_template('member/login.html', form=form, error=error)
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    form = PhoneField()
+    error = None
+
+    if form.validate_on_submit():
+        phone_number = "+1" + form.phone_number.data.replace('-','')
+        member = Member.query.filter_by(phone_number=phone_number).first()
+
+        group = Group.query.first()
+        
+        if group is None:
+            return redirect(url_for('index'))
+
+        if member is None:
+            flash("No one found with that number: {}".format(form.phone_number.data))
+            return redirect(url_for('register')) 
+        
+        session['member_id'] = member.id
+        member_token = randint(111111, 999999)
+        member.token = member_token
+        member.forgot_password = True
+        db.session.commit()
+        message = "Verify using this token: {}".format(member_token)
+        send_twilio(group, member, message)
+        return redirect(url_for('validate'))
+    
+    return render_template('member/forgot.html', form=form, error=error)
 
 @app.route('/logout')
 def logout():

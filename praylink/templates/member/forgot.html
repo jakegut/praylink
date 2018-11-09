@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Member Login{% endblock %}
+{% block title %}Forgot Password{% endblock %}
 
 {% block content %}
 
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset mdl-cell--2-offset-tablet">
-        <h3>Login</h3>
+        <h3>Forgot Password</h3>
         
         {% from "_formhelpers.html" import render_field %}
 
@@ -14,15 +14,13 @@
             <div class="error text-danger">{{ error }}</div>
         {% endif %}
         
-        <form method="POST" action="{{ url_for('login')}}" role="form">
+        <form method="POST" action="{{ url_for('forgot')}}" role="form">
             
             {{ form.hidden_tag() }}
             
             {{ render_field(form.phone_number, class="mdl-textfield__input") }}
-            {{ render_field(form.password, class="mdl-textfield__input") }}
-            <p><a href="{{ url_for('forgot') }}">Forgot your password?</a></p>
-            <br>
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Login</button>
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Continue</button>
             
         </form>
     </div>

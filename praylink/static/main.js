@@ -16,6 +16,7 @@ $(document).ready(function(){
             deletePrayer(prayerID)
         }
     });
+    
 
     function deletePrayer(prayerID){
         $.ajax({

@@ -3,7 +3,7 @@ from praylink import app, client, db
 from praylink.group.models import Group
 from praylink.group.form import NewGroupForm
 from praylink.member.decorators import admin_required
-from praylink.utils.send_twilio_test import send_twilio
+from praylink.utils.twilio_util import send_twilio_test
 from praylink.utils.groupme_util import create_group_bot
 
 @app.route("/newgroup", methods=['GET', 'POST'])
@@ -26,7 +26,7 @@ def new_group():
             group.twilio_token = form.twilio_token.data
             group.groupme_token = form.groupme_token.data
             db.session.commit()
-            send_twilio(group)
+            send_twilio_test(group)
             create_group_bot(group)
             return redirect(url_for('index'))
         else:

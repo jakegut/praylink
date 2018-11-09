@@ -59,3 +59,7 @@ body {
 
 .mdl-switch {
   width: auto; }
+
+  .no-link {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87); }

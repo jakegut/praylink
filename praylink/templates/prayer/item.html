@@ -9,6 +9,13 @@
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
             data-mdl-for="menu-{{ prayer.id }}">
             <li class="mdl-menu__item report-prayer" prayer-id="{{ prayer.id }}">Report</li>
+            {% if session.get('is_admin') and session.get('is_admin') == True %}
+            <hr>
+            <li class="mdl-menu__item edit-prayer" prayer-id="{{ prayer.id }}">
+                <a class="no-link" href="{{ url_for('admin.edit_prayer', prayer_id=prayer.id) }}">Edit</a>
+            </li>
+            <li class="mdl-menu__item delete-prayer" prayer-id="{{ prayer.id }}">Delete</li>
+            {% endif %}
         </ul>
 
         <div class="prayer-content">

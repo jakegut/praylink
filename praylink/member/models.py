@@ -11,6 +11,7 @@ class Member(db.Model):
     prayed_for = db.relationship('Prayer', secondary=prayed_for, backref=db.backref('prayed_for', lazy='dynamic'))
     subscribe_digest = db.Column(db.Boolean)
     subscribe_prayed = db.Column(db.Boolean)
+    forgot_password = db.Column(db.Boolean)
 
     def __init__(self, phone_number, password=None, is_admin=False, subscribe_digest=True, subscribe_prayed=True):
         self.phone_number = phone_number
@@ -18,6 +19,7 @@ class Member(db.Model):
         self.is_admin = is_admin
         self.subscribe_digest = subscribe_digest
         self.subscribe_prayed = subscribe_prayed
-    
+        self.forgot_password = False
+
     def __repr__(self):
         return "<Member %r>" % self.phone_number
