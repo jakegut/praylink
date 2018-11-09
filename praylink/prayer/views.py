@@ -38,7 +38,6 @@ def index(page=1):
     elif Group.query.count() == 0:
         return redirect(url_for('new_group'))
     
-
     per_page = app.config['PER_PAGE']
 
     if request.args.get('sort'):
@@ -188,7 +187,7 @@ def update_prayer(update_content, member, group):
         return "Update not long enough, try again!"
 
     if isinstance(prayer_id, int) and len(update_content) > 2:
-        prayer = Prayer.query.filter_by(id=prayer_id, member_id=member.id, group=group.id).first()
+        prayer = Prayer.query.filter_by(id=prayer_id, member_id=member.id, group_id=group.id).first()
         if prayer:
             prayer.update = update_content
             db.session.commit()
@@ -197,7 +196,7 @@ def update_prayer(update_content, member, group):
         else:
             return "Prayer not found, try again!"
     else:
-        return "Unable reading the update, try again."
+        return "Unable to read the update, try again."
 
 def unsubscribe(option, member):
     if option == "digest":

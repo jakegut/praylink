@@ -2,9 +2,11 @@ import datetime
 
 from celery import Celery
 from celery.schedules import crontab
-from praylink import app, client
+from praylink import app
 from praylink.prayer.models import Prayer
 from praylink.member.models import Member
+from praylink.group.models import Group
+from praylink.utils.twilio_util import create_client
 
 # COMMAND TO RUN CELERY BEAT (periodic tasks): venv\Scripts\celery.exe -A tasks:celery_app beat --loglevel=INFO
 # COMMAND TO RUN CELERY (windows): venv\Scripts\celery.exe -A tasks.celery_app worker -P eventlet
@@ -45,6 +47,10 @@ def weekley_digest():
     seven_days_ago = datetime.datetime.today() - datetime.timedelta(7)
     members = Member.query.filter_by(subscribe_digest=True).all()
     prayers = Prayer.query.filter(Prayer.publish_date >= seven_days_ago).order_by(Prayer.prayer_count.desc()).limit(5).all()
+    group = Group.query.first()
+
+    if group is None:
+        return
 
     resp = "Prayer Request digest for last week.\n\n"
 
@@ -56,10 +62,11 @@ def weekley_digest():
 
     resp += "\nVisit http://pray-link.com for more prayers. To unsubscribe, reply 'unsubscribe digest'"
 
+    client = create_client(group)
     for member in members:
         client.messages.create(
             to=member.phone_number,
-            from_=app.config['TWILIO_NUMBER'],
+            from_=group.twilio_number,
             body=resp
         )
 
@@ -67,6 +74,12 @@ def weekley_digest():
 def update_reminder():
     seven_days_ago = datetime.datetime.today() - datetime.timedelta(7)
     members = Member.query.all()
+    group = Group.query.first()
+
+    if group is None:
+        return
+
+    client = create_client(group)
 
     for member in members:
         prayer = member.prayers.filter_by(update=None).filter(Prayer.publish_date >= seven_days_ago).first()
@@ -74,7 +87,7 @@ def update_reminder():
             resp = "Your prayer: \'{}\' needs an update. Reply \'update {} [update here]\' to give everyone an update on your prayer!".format(prayer.content, prayer.id)
             client.messages.create(
                 to=member.phone_number,
-                from_=app.config['TWILIO_NUMBER'],
+                from_=group.twilio_number,
                 body=resp
             )
 
@@ -82,10 +95,14 @@ def update_reminder():
 def send_update(prayer_id):
     prayer = Prayer.query.filter_by(id=prayer_id).first()
     members = prayer.prayed_for.filter_by(subscribe_prayed=True).all()
+    group = Group.query.first()
+    if group is None:
+        return
+    client = create_client(group)
     for member in members:
         client.messages.create(
                 to=member.phone_number,
-                from_=app.config['TWILIO_NUMBER'],
+                from_=group.twilio_number,
                 body="A prayer you have prayed for ({}) has been updated: {}".format(prayer.content, prayer.update)
             )
     return True

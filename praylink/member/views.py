@@ -41,12 +41,9 @@ def register():
                 return redirect(url_for('signup'))
             member_token = randint(111111, 999999)
             member.token = member_token
-            db.session.commit()
-            client.messages.create(
-                to=phone_number,
-                from_=app.config['TWILIO_NUMBER'],
-                body="Signup using this token: {}".format(member_token)
-            )
+            group = Group.query.first()
+            message = "Signup using this token: {}".format(member_token)
+            send_twilio(group, member, message)
             return redirect(url_for('validate'))
         elif member.id and member.password:
             print(member.id)
