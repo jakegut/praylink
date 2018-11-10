@@ -1,0 +1,49 @@
+<html>
+<head>
+    <meta name="pdfkit-orientation" content="Landscape"/>
+    <style>
+    body{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    tbody{
+        font-weight: 200;
+    }
+    tbody tr:nth-child(odd) {background-color: #dfdfdf;}
+    th, td {
+        text-align: left;
+        padding: 10px;
+    }
+    th{
+        border-bottom: 2px solid black;
+    }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+        </tr>   
+    </thead>
+    <tbody>
+        {% for prayer in prayers %}
+        <tr>
+            {% for column in columns %}
+                {% if column == "phone_number" %}
+                    <td>{{ prayer.member.phone_number }}</td>
+                {% else %}
+                    <td>{{ prayer[column] }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

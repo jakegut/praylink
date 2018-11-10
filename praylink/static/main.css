@@ -5,7 +5,8 @@ body {
 
   .mdl-card {
     max-width: 100%;
-    background-color: rgba(255, 255, 255, 0.9); }
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px; }
 
     .mdl-badge[data-badge]:after {
       top: 4px;
@@ -40,22 +41,25 @@ body {
                     min-height: 600px;
                     margin: 0 auto; }
 
-                    .page-load-status {
-                      display: none;
-                      margin: 0 auto;
-                      text-align: center;
-                      font-size: 30px; }
+                    .text-danger {
+                      color: #d43232; }
 
-                      .page-content {
-                        max-width: 1200px;
-                        margin: 0 auto; }
+                      .page-load-status {
+                        display: none;
+                        margin: 0 auto;
+                        text-align: center;
+                        font-size: 30px; }
 
-                        .form-slider {
-                          margin-left: 28px;
-                          margin-right: 28px;
-                          margin-bottom: 15px; }
-                          .form-slider * {
-                            display: unset; }
+                        .page-content {
+                          max-width: 1200px;
+                          margin: 0 auto; }
+
+                          .form-slider {
+                            margin-left: 28px;
+                            margin-right: 28px;
+                            margin-bottom: 15px; }
+                            .form-slider * {
+                              display: unset; }
 
 .mdl-switch {
   width: auto; }

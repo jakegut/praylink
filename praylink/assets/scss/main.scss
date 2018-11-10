@@ -8,6 +8,7 @@ body{
 .mdl-card{
     max-width: 100%;
     background-color: rgba(#ffffff, 0.9);
+    padding: 10px;
 }
 
 .mdl-badge[data-badge]:after{
@@ -48,6 +49,10 @@ fake-card{
 .masonry-grid{
     min-height: 600px;
     margin: 0 auto;
+}
+
+.text-danger{
+    color: rgb(212, 50, 50);
 }
 
 .page-load-status{

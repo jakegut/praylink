@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Generate{% endblock %}
+
+{% block content %}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Generate</h3>
+        
+        {% from "_formhelpers.html" import render_field %}
+        {% from "_formhelpers.html" import render_checkbox %}
+
+        {% if error %}
+            <div class="error text-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('admin.generate')}}" role="form">
+            
+            {{ form.hidden_tag() }}
+            
+            {{ render_field(form.type, class="mdl-textfield__input") }}
+            {{ render_field(form.time_range, class="mdl-textfield__input") }}
+            <div>
+                {{ form.columns.label(class_="mdl-checkbox__label") }}
+                {% for field in form.columns %}
+                    {{ render_checkbox(field, name="columns") }}
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Generate</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

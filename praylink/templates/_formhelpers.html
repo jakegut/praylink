@@ -12,3 +12,20 @@
     {% endif %}
 </div>
 {% endmacro %}
+
+{% macro render_checkbox(field, name="") %}
+<div>    
+    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ field.id }}">
+        <input type="checkbox" id="{{ field.id }}" name="{{ name }}" class="mdl-checkbox__input" value="{{ field.data }}">
+        <span class="mdl-checkbox__label">{{ field.label }}</span>
+    </label>
+    
+    {% if field.errors %}
+        <span class="mdl-textfield__error" style="visibility: visible">
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        </span>
+    {% endif %}
+</div>
+{% endmacro %}

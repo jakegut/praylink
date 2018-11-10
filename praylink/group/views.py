@@ -56,7 +56,7 @@ def edit_group():
                 group.groupme_token = form.groupme_token.data
                 new_token = True
             db.session.commit()
-            send_twilio(group)
+            send_twilio_test(group)
             create_group_bot(group.id, new_token)
             flash("Changes were successful!")
             return redirect(url_for('index'))

@@ -50,6 +50,8 @@ services:
            - /www/static
         links:
             - praylink
+        depends_on:
+            - praylink
 
 volumes:
   redis:
